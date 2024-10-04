@@ -104,4 +104,4 @@ Para ejecutar el programa, simplemente ejecuta el script `main.py` en tu entorno
 
 ```bash
 python main.py
-```# proyecto-teo-2024
+```
