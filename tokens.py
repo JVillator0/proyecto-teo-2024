@@ -30,6 +30,7 @@ tokens = [
 
 # Reserved words
 reserved_words = {
+    'include': 'preprocessor',
     'class': 'reserved_word',
     'if': 'reserved_word',
     'else': 'reserved_word',
@@ -79,7 +80,15 @@ operators = {
     '>=': 'greater_equal_than',
     '<=': 'less_equal_than',
     '::': 'scope_resolution',
-    '!': 'not_operator'
+    '!': 'not_operator',
+    '++': 'increment',
+    '--': 'decrement',
+    '+=': 'plus_equal',
+    '_=': 'minus_equal',
+    '*=': 'multiplication_equal',
+    '/=': 'division_equal',
+    '%=': 'modulus_equal',
+    '&&=': 'and_equal',
 }
 
 # Delimiters

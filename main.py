@@ -27,7 +27,7 @@ comment_single_line_regex = r"//.*"
 comment_block_regex = r"/\*[\s\S]*?\*/"
 number_regex = r"\d+(\.\d+)?"
 string_regex = r'"([^"\\]*(\\.[^"\\]*)*)"'
-complex_operator_regex = r"(==|!=|>>|<<|::)"  # Operadores compuestos
+complex_operator_regex = r"(==|!=|>>|<<|::|\+\+|--|\+=|-=|\*=|/=|&&|\|\||>=|<=)"  # Operadores compuestos
 simple_operator_regex = r"[+\-*/%<>=!&|^~]"
 header_file_regex = r"<[a-zA-Z0-9_]+\.h>"
 
@@ -62,8 +62,15 @@ def analyze_code(file):
             tokens.append((start_pos, 'string', string_value))
             line = line.replace(string_value, '', 1)  # Remove the string from the line to process the rest
 
+        # Reconocer directivas de preprocesador como #include
+        if line.strip().startswith('#'):
+            preprocessor_match = re.search(r'#\s*include', line)
+            if preprocessor_match:
+                add_symbol(line_num, current_pos, 'preprocessor_include', preprocessor_match.group())
+                continue
+
         # Reconocer encabezados como <iostream> o <algo.h>
-        header_match = re.search(r'<[a-zA-Z0-9_]+>', line)
+        header_match = re.search(header_file_regex, line)
         if header_match:
             header_value = header_match.group()
             start_pos = line.find(header_value)
@@ -105,7 +112,6 @@ def analyze_code(file):
 
             else:
                 tokens.append((current_pos, 'error', token))
-            
             current_pos += len(token) + 1
 
         # Sort tokens by their position in the line

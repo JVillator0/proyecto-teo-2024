@@ -23,6 +23,7 @@ Las siguientes palabras reservadas han sido definidas para el analizador léxico
 
 | Palabra Reservada | Función                                                                         |
 |-------------------|---------------------------------------------------------------------------------|
+| **include**       | Directiva de preprocesador para incluir archivos de encabezado.                 |
 | **if**            | Permite evaluar una condición y ejecutar un bloque de código si es verdadera.    |
 | **else**          | Se ejecuta cuando la condición del bloque `if` es falsa.                        |
 | **class**         | Define una clase que puede contener propiedades y métodos.                      |
@@ -55,51 +56,68 @@ Se han definido los siguientes tokens con sus respectivas expresiones regulares 
 
 | Token                 | Expresión Regular                    | Descripción                                                           |
 |-----------------------|--------------------------------------|-----------------------------------------------------------------------|
-| **header_file**    | `r'<[a-zA-Z0-9_]+>'`        | Representa un archivo de encabezado entre `<` y `>` como `<iostream>` o `<string>` o `algo.h`. |
+| **header_file**    | `r'<[a-zA-Z0-9_]+>'`        | Representa un archivo de encabezado entre `<` y `>` como `<iostream>` o `<string>`. |
 | **identifier**         | `r"[a-zA-Z_][a-zA-Z0-9_]*"`         | Detecta identificadores válidos (caracteres alfanuméricos o guiones).  |
-| **número**             | `r"\d+(\.\d+)?"`                 | Detecta números enteros y flotantes.                                   |
+| **number**             | `r"\d+(\.\d+)?"`                 | Detecta números enteros y flotantes.                                   |
 | **preprocessor**       | `r"#include"`                       | Detecta directivas de preprocesador como `#include`.                   |
-| **coma**               | `r','`                              | Identifica comas usadas como separadores en expresiones o argumentos.  |
-| **comentario**         | `r"//.*"`                           | Identifica comentarios de una línea que empiezan con `//`.             |
-| **comentario_bloque**  | `r"/\*[\s\S]*?\*/"`             | Identifica comentarios de bloque entre `/*` y `*/`.                    |
-| **fin_de_instrucción** | `r';'`                              | Marca el final de una instrucción (normalmente un punto y coma `;`).   |
-| **paréntesis_de_apertura** | `r'\('`                        | Identifica el paréntesis de apertura `(`.                              |
-| **paréntesis_de_cierre**   | `r'\)'`                        | Identifica el paréntesis de cierre `)`.                                |
-| **llave_de_apertura**      | `r'\{'`                        | Identifica la llave de apertura `{`, que inicia un bloque de código.   |
-| **llave_de_cierre**        | `r'\}'`                        | Identifica la llave de cierre `}`, que termina un bloque de código.     |
-| **punto**              | `r'\.'`                            | Identifica el punto `.` usado en el acceso a propiedades o métodos.    |
-| **asignación**         | `r'='`                              | Identifica el operador de asignación `=`.                              |
-| **resolución_de_ámbito** | `r'::'`                           | Identifica el operador de resolución de ámbito `::` en C++.            |
-| **cadena**             | `r'"([^"\\]*(\\.[^"\\]*)*)"'` | Detecta cadenas de texto delimitadas por comillas dobles.              |
-| **igual_a**            | `r'=='`                             | Detecta el operador de igualdad `==`.                                  |
-| **diferente_de**       | `r'!='`                             | Detecta el operador de desigualdad `!=`.                               |
-| **desplazamiento_izq** | `r'<<'`                             | Detecta el operador de desplazamiento a la izquierda `<<`.             |
-| **desplazamiento_der** | `r'>>'`                             | Detecta el operador de desplazamiento a la derecha `>>`.               |
+| **comma**              | `r','`                              | Identifica comas usadas como separadores en expresiones o argumentos.  |
+| **comment**            | `r"//.*"`                           | Identifica comentarios de una línea que empiezan con `//`.             |
+| **block_comment**      | `r"/\*[\s\S]*?\*/"`             | Identifica comentarios de bloque entre `/*` y `*/`.                    |
+| **end_of_instruction** | `r';'`                              | Marca el final de una instrucción (normalmente un punto y coma `;`).   |
+| **open_parenthesis**   | `r'\('`                             | Identifica el paréntesis de apertura `(`.                              |
+| **close_parenthesis**  | `r'\)'`                             | Identifica el paréntesis de cierre `)`.                                |
+| **open_brace**         | `r'\{'`                             | Identifica la llave de apertura `{`, que inicia un bloque de código.   |
+| **close_brace**        | `r'\}'`                             | Identifica la llave de cierre `}`, que termina un bloque de código.     |
+| **dot**                | `r'\.'`                             | Identifica el punto `.` usado en el acceso a propiedades o métodos.    |
+| **assignment**         | `r'='`                              | Identifica el operador de asignación `=`.                              |
+| **scope_resolution**   | `r'::'`                             | Identifica el operador de resolución de ámbito `::` en C++.            |
+| **string**             | `r'"([^"\\]*(\\.[^"\\]*)*)"'` | Detecta cadenas de texto delimitadas por comillas dobles.              |
+| **equal_to**           | `r'=='`                             | Detecta el operador de igualdad `==`.                                  |
+| **not_equal**          | `r'!='`                             | Detecta el operador de desigualdad `!=`.                               |
+| **left_shift**         | `r'<<'`                             | Detecta el operador de desplazamiento a la izquierda `<<`.             |
+| **right_shift**        | `r'>>'`                             | Detecta el operador de desplazamiento a la derecha `>>`.               |
+| **increment**          | `r'\+\+'`                           | Detecta el operador de incremento `++`.                                |
+| **decrement**          | `r'--'`                             | Detecta el operador de decremento `--`.                                |
+| **plus_equal**         | `r'\+='`                            | Detecta el operador de suma y asignación `+=`.                         |
+| **minus_equal**        | `r'-='`                             | Detecta el operador de resta y asignación `-=`.                        |
+| **times_equal**        | `r'\*='`                            | Detecta el operador de multiplicación y asignación `*=`.               |
+| **divide_equal**       | `r'/='`                             | Detecta el operador de división y asignación `/=`.                     |
+| **modulus**            | `r'%'`                              | Operador que obtiene el resto de una división.                         |
+| **and_operator**       | `r'&&'`                             | Operador lógico AND.                                                   |
+| **or_operator**        | `r'\|\|'`                           | Operador lógico OR.                                                    |
+| **negation**           | `r'!'`                              | Operador de negación lógica.                                           |
 
 ### Operadores
 
-El analizador reconoce diversos operadores, incluidos:
+El analizador reconoce los siguientes operadores utilizados en C++:
 
-| **Token**        | **Expresión regular/regla** | **Explicación**                                                 |
-|------------------|-----------------------------|-----------------------------------------------------------------|
-| **mayor**        | `r'>'`                      | Operador que compara si el valor de la izquierda es mayor.       |
-| **mayor_igual**  | `r'>='`                     | Operador que compara si el valor de la izquierda es mayor o igual.|
-| **menor**        | `r'<'`                      | Operador que compara si el valor de la izquierda es menor.       |
-| **menor_igual**  | `r'<='`                     | Operador que compara si el valor de la izquierda es menor o igual.|
-| **igual_que**    | `r'=='`                     | Operador que compara si dos valores son iguales.                 |
-| **distinto**     | `r'!='`                     | Operador que compara si dos valores son diferentes.              |
-| **mas**          | `r'\+'`                     | Operador de suma.                                               |
-| **menos**        | `r'-'`                      | Operador de resta.                                              |
-| **multiplicacion**| `r'\*'`                    | Operador de multiplicación.                                     |
-| **division**     | `r'/'`                      | Operador de división.                                           |
-| **modulo**       | `r'%'`                      | Operador que obtiene el resto de una división.                  |
-| **and_operator** | `r'&&'`                     | Operador lógico AND.                                            |
-| **or_operator**  | `r'\|\|'`                   | Operador lógico OR.                                             |
-| **negacion**     | `r'!'`                      | Operador lógico de negación.                                    |
-| **scope_resolution** | `r'::'`                 | Operador de resolución de ámbito en C++.                        |
-| **left_shift**   | `r'<<'`                     | Operador de desplazamiento a la izquierda.                      |
-| **right_shift**  | `r'>>'`                     | Operador de desplazamiento a la derecha.                        |
-| **!**            | `r'!'`                      | Operador de negación lógica.                                    |
+| **Token**            | **Expresión regular**                | **Descripción**                                                   |
+|----------------------|--------------------------------------|-------------------------------------------------------------------|
+| **modulus**          | `%`                                  | Operador de módulo (resto de una división).                        |
+| **equal_to**         | `==`                                 | Operador que compara si dos valores son iguales.                   |
+| **not_equal**        | `!=`                                 | Operador que compara si dos valores son distintos.                 |
+| **right_shift**      | `>>`                                 | Operador de desplazamiento de bits a la derecha.                   |
+| **left_shift**       | `<<`                                 | Operador de desplazamiento de bits a la izquierda.                 |
+| **assignment**       | `=`                                  | Operador de asignación.                                            |
+| **plus**             | `+`                                  | Operador de suma.                                                  |
+| **minus**            | `-`                                  | Operador de resta.                                                 |
+| **multiplication**   | `*`                                  | Operador de multiplicación.                                        |
+| **division**         | `/`                                  | Operador de división.                                              |
+| **and_operator**     | `&&`                                 | Operador lógico AND.                                               |
+| **or_operator**      | `||`                                 | Operador lógico OR.                                                |
+| **greater_than**     | `>`                                  | Operador que compara si un valor es mayor que otro.                |
+| **less_than**        | `<`                                  | Operador que compara si un valor es menor que otro.                |
+| **greater_equal_than** | `>=`                               | Operador que compara si un valor es mayor o igual que otro.        |
+| **less_equal_than**  | `<=`                                 | Operador que compara si un valor es menor o igual que otro.        |
+| **scope_resolution** | `::`                                 | Operador de resolución de ámbito.                                  |
+| **negation**         | `!`                                  | Operador de negación lógica.                                       |
+| **increment**        | `++`                                 | Operador de incremento.                                            |
+| **decrement**        | `--`                                 | Operador de decremento.                                            |
+| **plus_equal**       | `+=`                                 | Operador de suma y asignación.                                     |
+| **minus_equal**      | `-=`                                 | Operador de resta y asignación.                                    |
+| **times_equal**      | `*=`                                 | Operador de multiplicación y asignación.                           |
+| **divide_equal**     | `/=`                                 | Operador de división y asignación.                                 |
+| **modulus_equal**    | `%=`                                 | Operador de módulo y asignación.                                   |
 
 ### Información Adicional
 
