@@ -55,6 +55,7 @@ Se han definido los siguientes tokens con sus respectivas expresiones regulares 
 
 | Token                 | Expresión Regular                    | Descripción                                                           |
 |-----------------------|--------------------------------------|-----------------------------------------------------------------------|
+| **header_file**    | `r'<[a-zA-Z0-9_]+>'`        | Representa un archivo de encabezado entre `<` y `>` como `<iostream>` o `<string>` o `algo.h`. |
 | **identifier**         | `r"[a-zA-Z_][a-zA-Z0-9_]*"`         | Detecta identificadores válidos (caracteres alfanuméricos o guiones).  |
 | **número**             | `r"\d+(\.\d+)?"`                 | Detecta números enteros y flotantes.                                   |
 | **preprocessor**       | `r"#include"`                       | Detecta directivas de preprocesador como `#include`.                   |
@@ -79,20 +80,26 @@ Se han definido los siguientes tokens con sus respectivas expresiones regulares 
 
 El analizador reconoce diversos operadores, incluidos:
 
-| Token              | Expresión Regular   | Descripción                                                         |
-|--------------------|--------------------|---------------------------------------------------------------------|
-| **mayor_que**      | `r'>'`             | Operador mayor que (`>`).                                           |
-| **menor_que**      | `r'<'`             | Operador menor que (`<`).                                           |
-| **igual_que**      | `r'=='`            | Operador de igualdad (`==`).                                        |
-| **más**            | `r'\+'`           | Operador de suma (`+`).                                             |
-| **menos**          | `r'-'`             | Operador de resta (`-`).                                            |
-| **multiplicación** | `r'\*'`           | Operador de multiplicación (`*`).                                   |
-| **división**       | `r'/'`             | Operador de división (`/`).                                         |
-| **distinto**       | `r'!='`            | Operador de desigualdad (`!=`).                                     |
-| **y_lógico**       | `r'&&'`            | Operador lógico AND (`&&`).                                         |
-| **o_lógico**       | `r'\|\|'`        | Operador lógico OR (`||`).                                          |
-| **desplazamiento_izq** | `r'<<'`         | Operador de desplazamiento a la izquierda (`<<`).                   |
-| **desplazamiento_der** | `r'>>'`         | Operador de desplazamiento a la derecha (`>>`).                     |
+| **Token**        | **Expresión regular/regla** | **Explicación**                                                 |
+|------------------|-----------------------------|-----------------------------------------------------------------|
+| **mayor**        | `r'>'`                      | Operador que compara si el valor de la izquierda es mayor.       |
+| **mayor_igual**  | `r'>='`                     | Operador que compara si el valor de la izquierda es mayor o igual.|
+| **menor**        | `r'<'`                      | Operador que compara si el valor de la izquierda es menor.       |
+| **menor_igual**  | `r'<='`                     | Operador que compara si el valor de la izquierda es menor o igual.|
+| **igual_que**    | `r'=='`                     | Operador que compara si dos valores son iguales.                 |
+| **distinto**     | `r'!='`                     | Operador que compara si dos valores son diferentes.              |
+| **mas**          | `r'\+'`                     | Operador de suma.                                               |
+| **menos**        | `r'-'`                      | Operador de resta.                                              |
+| **multiplicacion**| `r'\*'`                    | Operador de multiplicación.                                     |
+| **division**     | `r'/'`                      | Operador de división.                                           |
+| **modulo**       | `r'%'`                      | Operador que obtiene el resto de una división.                  |
+| **and_operator** | `r'&&'`                     | Operador lógico AND.                                            |
+| **or_operator**  | `r'\|\|'`                   | Operador lógico OR.                                             |
+| **negacion**     | `r'!'`                      | Operador lógico de negación.                                    |
+| **scope_resolution** | `r'::'`                 | Operador de resolución de ámbito en C++.                        |
+| **left_shift**   | `r'<<'`                     | Operador de desplazamiento a la izquierda.                      |
+| **right_shift**  | `r'>>'`                     | Operador de desplazamiento a la derecha.                        |
+| **!**            | `r'!'`                      | Operador de negación lógica.                                    |
 
 ### Información Adicional
 

@@ -29,6 +29,7 @@ number_regex = r"\d+(\.\d+)?"
 string_regex = r'"([^"\\]*(\\.[^"\\]*)*)"'
 complex_operator_regex = r"(==|!=|>>|<<|::)"  # Operadores compuestos
 simple_operator_regex = r"[+\-*/%<>=!&|^~]"
+header_file_regex = r"<[a-zA-Z0-9_]+\.h>"
 
 # Function to analyze the C++ file
 def analyze_code(file):
@@ -60,6 +61,14 @@ def analyze_code(file):
             start_pos = line.find(string_value)
             tokens.append((start_pos, 'string', string_value))
             line = line.replace(string_value, '', 1)  # Remove the string from the line to process the rest
+
+        # Reconocer encabezados como <iostream> o <algo.h>
+        header_match = re.search(r'<[a-zA-Z0-9_]+>', line)
+        if header_match:
+            header_value = header_match.group()
+            start_pos = line.find(header_value)
+            tokens.append((start_pos, 'header_file', header_value))
+            line = line.replace(header_value, '', 1)  # Elimina el encabezado para evitar procesarlo de nuevo
 
         # Tokenize complex operators first (==, !=, >>, <<, ::)
         complex_matches = list(re.finditer(complex_operator_regex, line))

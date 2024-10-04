@@ -62,6 +62,7 @@ reserved_words = {
 
 # Operators
 operators = {
+    '%': 'modulus',
     '==': 'equal_to',
     '!=': 'not_equal',
     '>>': 'right_shift',
