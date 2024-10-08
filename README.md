@@ -23,7 +23,7 @@ Las siguientes palabras reservadas han sido definidas para el analizador léxico
 
 | Palabra Reservada | Función                                                                         |
 |-------------------|---------------------------------------------------------------------------------|
-| **#include**       | Directiva de preprocesador para incluir archivos de encabezado.                 |
+| **include**       | Directiva de preprocesador para incluir archivos de encabezado.                 |
 | **if**            | Permite evaluar una condición y ejecutar un bloque de código si es verdadera.    |
 | **else**          | Se ejecuta cuando la condición del bloque `if` es falsa.                        |
 | **class**         | Define una clase que puede contener propiedades y métodos.                      |
