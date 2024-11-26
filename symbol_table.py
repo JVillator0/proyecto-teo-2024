@@ -33,9 +33,13 @@ class SemanticAnalyzer:
         
         if kind == "var_decl":
             # Manejar declaraciones de variables
-            name = node[2]
-            symbol_type = node[1]
-            self.analyze_variable_declaration(name, symbol_type, "global")
+            var_list = node[2];
+
+            for var in var_list:
+                name = var[0]
+                symbol_type = node[1]
+                self.analyze_variable_declaration(name, symbol_type, "global")
+
         elif kind == "assign":
             # Manejar asignaciones
             name = node[1]

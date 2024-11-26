@@ -18,10 +18,31 @@ def p_declaration(p):
                    | fun_declaration'''
     p[0] = p[1]
 
+# def p_var_declaration(p):
+#     '''var_declaration : type_specifier ID SEMICOLON
+#                        | type_specifier ID ASSIGN expression SEMICOLON'''
+#     p[0] = ('var_decl', p[1], p[2], p[4] if len(p) > 4 else None)
+
 def p_var_declaration(p):
-    '''var_declaration : type_specifier ID SEMICOLON
-                       | type_specifier ID ASSIGN expression SEMICOLON'''
-    p[0] = ('var_decl', p[1], p[2], p[4] if len(p) > 4 else None)
+    '''var_declaration : type_specifier var_list SEMICOLON'''
+    p[0] = ('var_decl', p[1], p[2])
+
+def p_var_list(p):
+    '''var_list : var_list COMMA var_assign
+                | var_assign'''
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    else:
+        p[0] = [p[1]] 
+
+def p_var_assign(p):
+    '''var_assign : ID
+                  | ID ASSIGN expression'''
+    if len(p) == 2:
+        p[0] = (p[1], None)
+    else:
+        p[0] = (p[1], p[3])
+
 
 def p_fun_declaration(p):
     '''fun_declaration : type_specifier ID LPAREN params RPAREN compound_stmt'''
