@@ -1,11 +1,12 @@
-int sum(int x, int y) {
-    return x + y;
-}
+#include <stdio.h>
 
 int main() {
-    int a = 5, b = 10, result;
+    int user_input;
 
-    result = sum(a, b);
+    printf("Please enter a number: ");
+    scanf("%d", &user_input);
 
-    return result;
+    printf("You entered: %d\n", user_input);
+
+    return 0;
 }

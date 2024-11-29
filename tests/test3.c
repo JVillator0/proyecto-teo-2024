@@ -1,14 +1,19 @@
+#include <stdio.h>
+
 int main() {
-    int a = 5;
-    float b;
+    int max_range;
 
-    if (a > 3) {
-        b = a + 2.5; // Operación válida
-        char c = 'z';
+    printf("Enter a maximum number: ");
+    scanf("%d", &max_range);
 
-        if (c == 'z') {
-            a = c; // Error semántico: asignación de char a int
+    int current = 0;
+
+    while (current <= max_range) {
+        if (current == 0) {
+            printf("%d ", current);
         }
+
+        current++;
     }
 
     return 0;

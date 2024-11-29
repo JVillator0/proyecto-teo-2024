@@ -1,14 +1,22 @@
-int main() {
-    int x = 0, y = 10;
+#include <stdio.h>
 
-    if (x < y) {
-        x = x + 1;
-    } else {
-        y = y - 1;
+int main() {
+    int value = 10;
+
+    if (value > 0) {
+        printf("The number is positive.\n");
+
+        if (value % 2 == 0) {
+            printf("And it is an even number.\n");
+        } else {
+            printf("And it is an odd number.\n");
+        }
     }
 
-    while (x < y) {
-        x = x + 2;
+    if (value < 0) {
+        printf("The number is negative.\n");
+    } else {
+        printf("The number is zero.\n");
     }
 
     return 0;

@@ -1,74 +1,107 @@
-
 import ply.lex as lex
 
+# Token names list
+tokens = [
+    # Basic tokens
+    'ASSIGN', 'CHAR', 'COMMA', 'EOF', 'FLOAT', 'ID', 'INCLUDE', 
+    'INT', 'LBRACE', 'LOGIC', 'LPAREN', 'NUMBER', 'OP', 
+    'QUOTES', 'RBRACE', 'READ', 'RELATIONAL', 'RETURN', 
+    'RPAREN', 'SEMICOLON', 'STRING', 'VOID', 'WRITE',
+    
+    # Reserved words
+    'DO', 'ELSE', 'FOR', 'IF', 'WHILE'
+]
+
+# Reserved words dictionary
 reserved = {
-    'int': 'INT',
-    'float': 'FLOAT',
     'char': 'CHAR',
-    'void': 'VOID',
-    'return': 'RETURN',
-    'if': 'IF',
+    'do': 'DO',
     'else': 'ELSE',
-    'while': 'WHILE',
+    'float': 'FLOAT',
     'for': 'FOR',
-    'do': 'DO'
+    'if': 'IF',
+    'int': 'INT',
+    'printf': 'WRITE',
+    'return': 'RETURN',
+    'scanf': 'READ',
+    'void': 'VOID', 
+    'while': 'WHILE'
 }
 
-tokens = [
-    'ID', 'NUMBER', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
-    'ASSIGN', 'EQ', 'NEQ', 'LT', 'GT', 'LEQ', 'GEQ',
-    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'COMMA',
-    'SEMICOLON', 'PLUSEQ', 'MINUSEQ', 'CHARACTER'
-] + list(reserved.values())
-
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_TIMES = r'\*'
-t_DIVIDE = r'/'
+# Simple regular expression rules
 t_ASSIGN = r'='
-t_EQ = r'=='
-t_NEQ = r'!='
-t_LT = r'<'
-t_GT = r'>'
-t_LEQ = r'<='
-t_GEQ = r'>='
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
 t_COMMA = r','
+t_EOF = r'\$'
+t_LBRACE = r'\{'
+t_LPAREN = r'\('
+t_QUOTES = r'\"'
+t_RBRACE = r'\}'
+t_RPAREN = r'\)'
 t_SEMICOLON = r';'
-t_PLUSEQ = r'\+='
-t_MINUSEQ = r'-='
 
-def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'ID')
+def t_CHAR(t):
+    # Recognize character strings
+    r'\"([^\\"]|\\.|\n)*\"'
     return t
 
+def t_COMMENT(t):
+    # Handle single and multi-line comments
+    r'\/\/.*|\/\*[\s\S]*?\*\/'
+    # Increment line number based on newlines in comment
+    t.lexer.lineno += t.value.count('\n')
+    pass  # Comments are ignored
+
+def t_error(t):
+    # Handle lexical errors
+    t.lexer.skip(1)
+
+def t_ID(t):
+    # Identify identifiers and reserved words
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    # Check for reserved words
+    t.type = reserved.get(t.value, 'ID') 
+    return t
+
+def t_INCLUDE(t):
+    # Recognize include directives
+    r'\#include[ ]*<[^>]+>'
+    # Increment line number 
+    t.lexer.lineno += t.value.count('\n')  
+    pass  # Includes are ignored
+
+def t_LOGIC(t):
+    # Recognize logical operators
+    r'(\>=)|(\<=)|(\==)|(\!=)|(\<)|(\>)'
+    return t
+
+def t_newline(t):
+    # Track new lines
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
 def t_NUMBER(t):
+    # Recognize numbers (integers and floats)
     r'\d+(\.\d+)?'
     t.value = float(t.value) if '.' in t.value else int(t.value)
     return t
 
-def t_CHARACTER(t):
-    r"'(\\.|[^\\'])'"
-    t.value = t.value[1:-1]
+def t_OP(t):
+    # Recognize arithmetic operators
+    r'(\+)|(\-)|(\*)|(\/)|(\%)'
     return t
 
+def t_RELATIONAL(t):
+    # Recognize relational operators
+    r'(\&{2})|(\|{2})'
+    return t
+
+def t_STRING(t):
+    # Recognize string literals
+    r'\"([^\\\n]|(\\.))*\"'
+    return t
+
+# Characters to ignore
 t_ignore = ' \t'
 
-def t_COMMENT(t):
-    r'//.*|/\*[\s\S]*?\*/'
-    t.lexer.lineno += t.value.count('\n')
-    pass
-
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
-def t_error(t):
-    print(f"Illegal character '{t.value[0]}' at line {t.lineno}")
-    t.lexer.skip(1)
-
-lexer = lex.lex()
+# Create lexer
+lexer = lex.lex(debug=1)
